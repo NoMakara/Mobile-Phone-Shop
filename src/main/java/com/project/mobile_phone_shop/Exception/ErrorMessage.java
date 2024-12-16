@@ -1,7 +1,8 @@
 package com.project.mobile_phone_shop.Exception;
 
 public enum ErrorMessage {
-    PRODUCT_NOT_FOUND("Product Not Found!");
+    NOT_FOUND("Not Found!"),
+    ALREADY_EXIST("Already Exist!");
 
     private final String message;
 
@@ -9,7 +10,9 @@ public enum ErrorMessage {
         this.message = message;
     }
 
+
     public String getErrorMessage() {
         return message;
     }
 }
+

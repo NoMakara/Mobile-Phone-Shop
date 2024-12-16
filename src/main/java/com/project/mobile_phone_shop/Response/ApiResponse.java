@@ -4,10 +4,10 @@ import lombok.Data;
 @Data
 public class ApiResponse {
     private String message;
-    private Object data;
+    private int statusCode;
 
-    public ApiResponse(String message, Object data) {
+    public ApiResponse(String message, int statusCode) {
         this.message = message;
-        this.data = data;
+        this.statusCode = statusCode;
     }
 }

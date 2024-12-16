@@ -3,46 +3,40 @@ package com.project.mobile_phone_shop.Controller;
 import com.project.mobile_phone_shop.Dto.BrandDto;
 import com.project.mobile_phone_shop.Entity.Brand;
 import com.project.mobile_phone_shop.ServiceImp.BrandServiceImp;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1")
+@RequiredArgsConstructor
 public class BrandController {
     private final BrandServiceImp brandService;
 
-    public BrandController(BrandServiceImp brandService) {
-        this.brandService = brandService;
-    }
-
     @GetMapping("/brands")
     public ResponseEntity<?> getAllBrand() {
-        List<Brand> list = brandService.getAllBrand();
-        List<BrandDto> brandDto = brandService.convertToDtos(list);
-        return ResponseEntity.ok(brandDto);
+        List<BrandDto> list = brandService.getAllBrand();
+        return ResponseEntity.ok(list);
     }
 
     @GetMapping("/brands/{id}")
     public ResponseEntity<?> getBrandById(@PathVariable Integer id) {
-        Brand brand = brandService.getBrandById(id);
-        BrandDto brandDto = brandService.convertToDto(brand);
-        return ResponseEntity.ok(brandDto);
+        BrandDto brand = brandService.getBrandById(id);
+        return ResponseEntity.ok(brand);
     }
 
     @PostMapping("/brands")
-    public ResponseEntity<?> createBrand(@RequestBody Brand brand) {
-        Brand createBrand = brandService.createBrand(brand);
-        BrandDto brandDto = brandService.convertToDto(createBrand);
-        return ResponseEntity.ok(brandDto);
+    public ResponseEntity<?> createBrand(@RequestBody BrandDto brand) {
+        Brand createBrand = brandService.addBrand(brand);
+        return ResponseEntity.ok(createBrand);
     }
 
     @PutMapping("/brands")
     public ResponseEntity<?> updateBrand(@RequestParam Integer id,
-                                         @RequestBody Brand brand) {
-        Brand updateBrand = brandService.updateBrand(id, brand);
-        BrandDto brandDto = brandService.convertToDto(updateBrand);
-        return ResponseEntity.ok(brandDto);
+                                         @RequestBody BrandDto dto) {
+        Brand updateBrand = brandService.updateBrand(id, dto);
+        return ResponseEntity.ok(updateBrand);
     }
 
     @DeleteMapping("/brands/{id}")

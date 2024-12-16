@@ -2,56 +2,53 @@ package com.project.mobile_phone_shop.ServiceImp;
 
 import com.project.mobile_phone_shop.Dto.BrandDto;
 import com.project.mobile_phone_shop.Entity.Brand;
-import com.project.mobile_phone_shop.Exception.ProductNotFoundException;
+import com.project.mobile_phone_shop.Exception.NotFoundException;
 import com.project.mobile_phone_shop.IService.IBrandService;
 import com.project.mobile_phone_shop.Repository.BrandRepository;
+import com.project.mobile_phone_shop.Validate.Validate;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import java.util.List;
-import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class BrandServiceImp implements IBrandService {
     private final BrandRepository brandRepository;
     private final ModelMapper modelMapper;
+    private final Validate validate;
 
-    public BrandServiceImp(BrandRepository brandRepository, ModelMapper modelMapper) {
-        this.brandRepository = brandRepository;
-        this.modelMapper = modelMapper;
+    @Override
+    public BrandDto getBrandById(Integer id) {
+        Brand brand = brandRepository.findById(id).orElseThrow(NotFoundException::new);
+        BrandDto brandDto = convertToDto(brand);
+        return brandDto;
     }
 
     @Override
-    public Brand getBrandById(Integer id) {
-        return brandRepository.findById(id).orElseThrow(ProductNotFoundException::new);
+    public List<BrandDto> getAllBrand() {
+        List<Brand> brandList = brandRepository.findAll();
+        List<BrandDto> brandDtos = convertToDtos(brandList);
+        return brandDtos;
     }
 
     @Override
-    public List<Brand> getAllBrand() {
-        return brandRepository.findAll();
-    }
-
-    @Override
-    public Brand createBrand(Brand brand) {
+    public Brand addBrand(BrandDto dto) {
+        validate.ValidateBrandIsExist(dto);
+        Brand brand = new Brand(dto.getId(), dto.getName());
         return brandRepository.save(brand);
     }
 
     @Override
-    public Brand updateBrand(Integer id, Brand brand) {
-            Optional<Brand> targetBrand = brandRepository.findById(id);
-            if(targetBrand.isPresent()) {
-                return brandRepository.save(brand);
-            }
-       throw new ProductNotFoundException();
+    public Brand updateBrand(Integer id, BrandDto dto) {
+        validate.ValidateBrandNotFound(id);
+        return brandRepository.save(new Brand(id,dto.getName()));
     }
 
     @Override
-    public Brand deleteBrand(Integer id) {
-        Optional<Brand> targetBrand = brandRepository.findById(id);
-        if(targetBrand.isPresent()){
-            brandRepository.deleteById(id);
-        }
-        throw new ProductNotFoundException();
+    public void deleteBrand(Integer id) {
+        validate.ValidateBrandNotFound(id);
+        brandRepository.deleteById(id);
     }
 
     @Override
@@ -61,7 +58,6 @@ public class BrandServiceImp implements IBrandService {
 
     @Override
     public BrandDto convertToDto(Brand brand){
-        BrandDto brandDto = modelMapper.map(brand,BrandDto.class);
-        return brandDto;
+        return modelMapper.map(brand,BrandDto.class);
     }
 }
