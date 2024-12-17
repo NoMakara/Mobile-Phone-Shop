@@ -7,7 +7,6 @@ import com.project.mobile_phone_shop.Exception.NotFoundException;
 import com.project.mobile_phone_shop.Repository.BrandRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-
 import java.util.Optional;
 
 @RequiredArgsConstructor

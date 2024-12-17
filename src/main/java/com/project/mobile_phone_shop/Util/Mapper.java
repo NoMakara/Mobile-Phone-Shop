@@ -1,4 +1,4 @@
-package com.project.mobile_phone_shop.ServiceUtil;
+package com.project.mobile_phone_shop.Util;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;
