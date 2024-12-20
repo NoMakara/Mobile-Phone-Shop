@@ -17,7 +17,6 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class BrandController {
     private final BrandServiceImp brandService;
-    private final BrandFilter brandFilter;
 
     @GetMapping("/brands")
     public ResponseEntity<?> getBrand(@RequestParam Map<String,String> params) {
@@ -29,20 +28,20 @@ public class BrandController {
     @GetMapping("/brands/{id}")
     public ResponseEntity<?> getBrandById(@PathVariable Integer id) {
         BrandDto brand = brandService.getBrandById(id);
-        return ResponseEntity.ok(brand);
+        return ResponseEntity.ok(brand.getName());
     }
 
     @PostMapping("/brands")
     public ResponseEntity<?> createBrand(@RequestBody BrandDto brand) {
-        Brand createBrand = brandService.addBrand(brand);
-        return ResponseEntity.ok(createBrand);
+        BrandDto createBrand = brandService.addBrand(brand);
+        return ResponseEntity.ok(createBrand.getName());
     }
 
     @PutMapping("/brands")
     public ResponseEntity<?> updateBrand(@RequestParam Integer id,
                                          @RequestBody BrandDto dto) {
-        Brand updateBrand = brandService.updateBrand(id, dto);
-        return ResponseEntity.ok(updateBrand);
+        BrandDto updatedBrand = brandService.updateBrand(id, dto);
+        return ResponseEntity.ok(updatedBrand.getName());
     }
 
     @DeleteMapping("/brands/{id}")

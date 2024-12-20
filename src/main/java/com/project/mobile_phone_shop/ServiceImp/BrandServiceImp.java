@@ -28,7 +28,9 @@ public class BrandServiceImp implements IBrandService {
 
     @Override
     public BrandDto getBrandById(Integer id) {
-        Brand brand = brandRepository.findById(id).orElseThrow(NotFoundException::new);
+        Brand brand = brandRepository
+                .findById(id)
+                .orElseThrow(NotFoundException::new);
         return convertToDto(brand);
     }
 
@@ -63,16 +65,17 @@ public class BrandServiceImp implements IBrandService {
     }
 
     @Override
-    public Brand addBrand(BrandDto dto) {
+    public BrandDto addBrand(BrandDto dto) {
         validate.ValidateBrandIsExist(dto);
         Brand brand = new Brand(dto.getId(), dto.getName());
-        return brandRepository.save(brand);
+        return convertToDto(brandRepository.save(brand));
     }
 
     @Override
-    public Brand updateBrand(Integer id, BrandDto dto) {
+    public BrandDto updateBrand(Integer id, BrandDto dto) {
         validate.ValidateBrandNotFound(id);
-        return brandRepository.save(new Brand(id,dto.getName()));
+        Brand updatedBrand = brandRepository.save(new Brand(id,dto.getName()));
+        return convertToDto(updatedBrand);
     }
 
     @Override

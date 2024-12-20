@@ -10,8 +10,8 @@ import java.util.Map;
 public interface IBrandService {
     BrandDto getBrandById(Integer id);
     Page<Brand> getBrand(Map<String, String> params);
-    Brand addBrand(BrandDto brand);
-    Brand updateBrand(Integer id, BrandDto dto);
+    BrandDto addBrand(BrandDto brand);
+    BrandDto updateBrand(Integer id, BrandDto dto);
     void deleteBrand(Integer id);
     List<BrandDto> convertToDtos(List<Brand> brands);
     BrandDto convertToDto(Brand brand);
