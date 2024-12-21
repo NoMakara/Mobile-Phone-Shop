@@ -7,12 +7,11 @@ import org.springframework.data.domain.Page;
 import java.util.List;
 import java.util.Map;
 
-public interface IBrandService {
+public interface BrandService {
     BrandDto getBrandById(Integer id);
     Page<Brand> getBrand(Map<String, String> params);
     BrandDto addBrand(BrandDto brand);
     BrandDto updateBrand(Integer id, BrandDto dto);
     void deleteBrand(Integer id);
-    List<BrandDto> convertToDtos(List<Brand> brands);
-    BrandDto convertToDto(Brand brand);
+    BrandDto findByName(String name);
 }

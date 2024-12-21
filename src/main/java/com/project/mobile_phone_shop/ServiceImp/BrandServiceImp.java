@@ -5,24 +5,23 @@ import com.project.mobile_phone_shop.Entity.Brand;
 import com.project.mobile_phone_shop.Exception.NotFoundException;
 import com.project.mobile_phone_shop.Filter.BrandFilter;
 import com.project.mobile_phone_shop.Filter.BrandSpec;
-import com.project.mobile_phone_shop.IService.IBrandService;
+import com.project.mobile_phone_shop.IService.BrandService;
+import com.project.mobile_phone_shop.Mapper.Mapper;
 import com.project.mobile_phone_shop.Repository.BrandRepository;
 import com.project.mobile_phone_shop.Util.PageUtil;
 import com.project.mobile_phone_shop.Validate.Validate;
 import lombok.RequiredArgsConstructor;
-import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
-public class BrandServiceImp implements IBrandService {
+public class BrandServiceImp implements BrandService {
     private final BrandRepository brandRepository;
-    private final ModelMapper modelMapper;
+    private final Mapper mapper;
     private final Validate validate;
     private final BrandFilter brandFilter;
 
@@ -31,7 +30,7 @@ public class BrandServiceImp implements IBrandService {
         Brand brand = brandRepository
                 .findById(id)
                 .orElseThrow(NotFoundException::new);
-        return convertToDto(brand);
+        return mapper.map(brand,BrandDto.class);
     }
 
     @Override
@@ -67,15 +66,15 @@ public class BrandServiceImp implements IBrandService {
     @Override
     public BrandDto addBrand(BrandDto dto) {
         validate.ValidateBrandIsExist(dto);
-        Brand brand = new Brand(dto.getId(), dto.getName());
-        return convertToDto(brandRepository.save(brand));
+        Brand brand = mapper.map(dto,Brand.class);
+        return mapper.map(brandRepository.save(brand),BrandDto.class);
     }
 
     @Override
     public BrandDto updateBrand(Integer id, BrandDto dto) {
         validate.ValidateBrandNotFound(id);
         Brand updatedBrand = brandRepository.save(new Brand(id,dto.getName()));
-        return convertToDto(updatedBrand);
+        return mapper.map(updatedBrand, BrandDto.class);
     }
 
     @Override
@@ -85,12 +84,8 @@ public class BrandServiceImp implements IBrandService {
     }
 
     @Override
-    public List<BrandDto> convertToDtos(List<Brand> brands){
-        return brands.stream().map(this::convertToDto).toList();
+    public BrandDto findByName(String name) {
+        return mapper.map(brandRepository.findByName(name), BrandDto.class);
     }
 
-    @Override
-    public BrandDto convertToDto(Brand brand){
-        return modelMapper.map(brand,BrandDto.class);
-    }
 }
