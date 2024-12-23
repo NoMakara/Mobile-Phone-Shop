@@ -15,9 +15,5 @@ spring:
       hibernate:
       format_sql: true
       type: trace
-Server:
+server:
   port: 8081
-
-
-
-
