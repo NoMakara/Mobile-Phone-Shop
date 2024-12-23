@@ -3,6 +3,7 @@ package Service;
 import com.project.mobile_phone_shop.Dto.BrandDto;
 import com.project.mobile_phone_shop.Entity.Brand;
 import com.project.mobile_phone_shop.Exception.AlreadyExistException;
+import com.project.mobile_phone_shop.Mapper.Mapper;
 import com.project.mobile_phone_shop.Repository.BrandRepository;
 import com.project.mobile_phone_shop.ServiceImp.BrandServiceImp;
 import com.project.mobile_phone_shop.Validate.Validate;
@@ -12,8 +13,6 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.modelmapper.ModelMapper;
-import java.util.Optional;
 import static org.mockito.Mockito.*;
 
 public class BrandServiceTest {
@@ -25,7 +24,7 @@ public class BrandServiceTest {
     private Validate validate;
 
     @Mock
-    private ModelMapper modelMapper;
+    private Mapper mapper;
 
     @InjectMocks
     private BrandServiceImp brandService;
@@ -42,17 +41,20 @@ public class BrandServiceTest {
         mockBrand.setName("Apple");
         mockBrand.setId(1);
 
-        BrandDto brandDto = new BrandDto(1, "Apple");
-        doNothing().when(validate).ValidateBrandIsExist(brandDto);
+        BrandDto mockBrandDto = new BrandDto(1, "Apple");
+        doNothing().when(validate).ValidateBrandIsExist(mockBrandDto);
 
         // When
+        when(mapper.map(mockBrandDto, Brand.class)).thenReturn(mockBrand);
         when(brandRepository.save(mockBrand)).thenReturn(mockBrand);
-        when(modelMapper.map(mockBrand, BrandDto.class)).thenReturn(brandDto);
-        BrandDto returnBrandDto = brandService.addBrand(brandDto);
+        when(mapper.map(mockBrand, BrandDto.class)).thenReturn(mockBrandDto);
+
+        //act
+        brandService.addBrand(mockBrandDto);
 
         // Then
-        Assertions.assertEquals(1, returnBrandDto.getId());
-        Assertions.assertEquals("Apple", returnBrandDto.getName());
+        Assertions.assertEquals(1, mockBrandDto.getId());
+        Assertions.assertEquals("Apple", mockBrandDto.getName());
         verify(brandRepository, times(1)).save(mockBrand);
     }
 
@@ -76,15 +78,13 @@ public class BrandServiceTest {
     @Test
     public void Test_getBrandById_Then_Return_BrandDto() {
         //arrange
-        Brand mockBrand = new Brand();
-        mockBrand.setId(1);
-        mockBrand.setName("Apple");
+        Brand mockBrand = new Brand(1,"Apple");
 
-        BrandDto brandDto = new BrandDto(1,"Apple");
+        BrandDto mockBrandDto = new BrandDto(1,"Apple");
 
         //when
-        when(brandRepository.findById(1)).thenReturn(Optional.of(mockBrand));
-        when(modelMapper.map(mockBrand,BrandDto.class)).thenReturn(brandDto);
+        when(validate.ValidateBrandNotFound(1)).thenReturn(mockBrand);
+        when(mapper.map(mockBrand,BrandDto.class)).thenReturn(mockBrandDto);
 
         //act
         BrandDto dto = brandService.getBrandById(1);
@@ -93,7 +93,7 @@ public class BrandServiceTest {
         Assertions.assertNotNull(dto);
         Assertions.assertEquals(1,dto.getId());
         Assertions.assertEquals("Apple",dto.getName());
-        verify(brandRepository,times(1)).findById(1);
+        verify(validate, times(1)).ValidateBrandNotFound(1);
     }
 
     @Test
@@ -102,9 +102,10 @@ public class BrandServiceTest {
         Brand mockBrand = new Brand(1,"Samsung");
         BrandDto mockDto = new BrandDto(1, "Samsung");
 
-        doNothing().when(validate).ValidateBrandNotFound(1);
+        when(validate.ValidateBrandNotFound(1)).thenReturn(mockBrand);
+        when(mapper.map(mockDto, Brand.class)).thenReturn(mockBrand);
         when(brandRepository.save(any(Brand.class))).thenReturn(mockBrand);
-        when(modelMapper.map(mockBrand, BrandDto.class)).thenReturn(mockDto);
+        when(mapper.map(mockBrand, BrandDto.class)).thenReturn(mockDto);
 
         //act
         BrandDto dto = brandService.updateBrand(1, mockDto);
@@ -122,7 +123,7 @@ public class BrandServiceTest {
         Brand brand = new Brand(1,"Apple");
 
         //when
-        doNothing().when(validate).ValidateBrandNotFound(1);
+        when(validate.ValidateBrandNotFound(1)).thenReturn(brand);
         //then
         Assertions.assertAll(()-> brandService.deleteBrand(1));
     }

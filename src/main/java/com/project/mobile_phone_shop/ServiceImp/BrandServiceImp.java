@@ -27,9 +27,7 @@ public class BrandServiceImp implements BrandService {
 
     @Override
     public BrandDto getBrandById(Integer id) {
-        Brand brand = brandRepository
-                .findById(id)
-                .orElseThrow(NotFoundException::new);
+        Brand brand = validate.ValidateBrandNotFound(id);
         return mapper.map(brand,BrandDto.class);
     }
 
@@ -73,7 +71,7 @@ public class BrandServiceImp implements BrandService {
     @Override
     public BrandDto updateBrand(Integer id, BrandDto dto) {
         validate.ValidateBrandNotFound(id);
-        Brand updatedBrand = brandRepository.save(new Brand(id,dto.getName()));
+        Brand updatedBrand = brandRepository.save(mapper.map(dto,Brand.class));
         return mapper.map(updatedBrand, BrandDto.class);
     }
 
