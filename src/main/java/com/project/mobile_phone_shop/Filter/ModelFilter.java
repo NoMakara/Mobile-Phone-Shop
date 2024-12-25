@@ -8,18 +8,18 @@ import java.util.Map;
 @Data
 @Component
 public class ModelFilter {
-    private Integer id;
+    private Long id;
     private String name;
 
     public static ModelFilter buildModelFilter(Map<String, String> params) {
         ModelFilter modelFilter = new ModelFilter();
 
-        if (params.containsKey("name")) {
-            modelFilter.setName(params.get("name"));
+        if (params.containsKey("model_name")) {
+            modelFilter.setName(params.get("model_name"));
         }
 
         if (params.containsKey("id")) {
-            modelFilter.setId(Integer.parseInt(params.get("id")));
+            modelFilter.setId(Long.parseLong(params.get("id")));
         }
 
         return modelFilter;

@@ -25,7 +25,7 @@ public class ModelController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> getModelById(@PathVariable Integer id) {
+    public ResponseEntity<?> getModelById(@PathVariable Long id) {
         ModelDto dto = modelService.getModelById(id);
         return ResponseEntity.ok(dto.getName());
     }
@@ -37,13 +37,13 @@ public class ModelController {
     }
 
     @PutMapping
-    public ResponseEntity<?> updateModel(@RequestParam Integer id, @RequestBody ModelDto name) {
+    public ResponseEntity<?> updateModel(@RequestParam Long id, @RequestBody ModelDto name) {
         ModelDto modelDto = modelService.updateModel(id, name);
         return ResponseEntity.ok(modelDto.getName());
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteModel(@PathVariable Integer id) {
+    public ResponseEntity<?> deleteModel(@PathVariable Long id) {
         modelService.deleteModel(id);
         return ResponseEntity.noContent().build();
     }

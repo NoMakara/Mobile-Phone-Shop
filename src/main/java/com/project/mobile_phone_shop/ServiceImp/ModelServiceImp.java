@@ -43,21 +43,21 @@ public class ModelServiceImp implements ModelService {
     }
 
     @Override
-    public ModelDto getModelById(Integer id) {
+    public ModelDto getModelById(Long id) {
         Model model = validate.ValidateModelNotFound(id);
         return mapper.map(model, ModelDto.class);
     }
 
     @Override
-    public ModelDto updateModel(Integer id, ModelDto dto) {
+    public ModelDto updateModel(Long id, ModelDto dto) {
         validate.ValidateModelNotFound(id);
         Model updatedModel = modelRepository.save(mapper.map(dto,Model.class));
         return mapper.map(updatedModel, ModelDto.class);
     }
 
     @Override
-    public void deleteModel(Integer id) {
-        validate.ValidateBrandNotFound(id);
+    public void deleteModel(Long id) {
+        validate.ValidateModelNotFound(id);
         modelRepository.deleteById(id);
     }
 }

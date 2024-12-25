@@ -1,4 +1,7 @@
 spring:
+  liquibase:
+    change-log: classpath:db/changelog/db.changelog-master.yaml
+    enabled: false
   datasource:
     url: jdbc:postgresql://localhost:5432/mobile_phone_shop
     username: postgres
@@ -15,5 +18,8 @@ spring:
       hibernate:
       format_sql: true
       type: trace
-Server:
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+server:
   port: 8081
