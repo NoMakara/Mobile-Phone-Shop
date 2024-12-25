@@ -1,7 +1,6 @@
 package com.project.mobile_phone_shop.Entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.project.mobile_phone_shop.Dto.ModelDto;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -18,7 +17,10 @@ public class Model {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    @Column(name = "model_id")
+    private Long id;
+
+    @Column(name = "model_name")
     private String name;
 
     @JsonIgnore

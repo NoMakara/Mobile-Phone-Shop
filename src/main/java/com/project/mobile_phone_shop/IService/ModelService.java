@@ -11,9 +11,9 @@ public interface ModelService {
 
     ModelDto addModel(ModelDto dto);
 
-    ModelDto getModelById(Integer id);
+    ModelDto getModelById(Long id);
 
-    ModelDto updateModel(Integer id, ModelDto dto);
+    ModelDto updateModel(Long id, ModelDto dto);
 
-    void deleteModel(Integer id);
+    void deleteModel(Long id);
 }

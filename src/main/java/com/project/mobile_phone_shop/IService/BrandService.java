@@ -4,7 +4,6 @@ import com.project.mobile_phone_shop.Dto.BrandDto;
 import com.project.mobile_phone_shop.Entity.Brand;
 import org.springframework.data.domain.Page;
 
-import java.util.List;
 import java.util.Map;
 
 public interface BrandService {
