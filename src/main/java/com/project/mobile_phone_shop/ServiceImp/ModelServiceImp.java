@@ -6,7 +6,7 @@ import com.project.mobile_phone_shop.Entity.Brand;
 import com.project.mobile_phone_shop.Entity.Model;
 import com.project.mobile_phone_shop.Filter.ModelFilter;
 import com.project.mobile_phone_shop.Filter.ModelSpec;
-import com.project.mobile_phone_shop.IService.ModelService;
+import com.project.mobile_phone_shop.Service.ModelService;
 import com.project.mobile_phone_shop.Mapper.Mapper;
 import com.project.mobile_phone_shop.Repository.ModelRepository;
 import com.project.mobile_phone_shop.Validate.Validate;

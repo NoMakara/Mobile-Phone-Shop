@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.DecimalMin;
 import java.math.BigDecimal;
 import java.util.List;
 
@@ -25,8 +26,9 @@ public class Product {
     @Column(name = "available_unit")
     private Integer availableUnit;
 
+    @DecimalMin(value = "0.000001", message = "Price must be greater than 0")
     @Column(name = "sale_price")
-    private BigDecimal salePrice;
+    private BigDecimal salePrice = BigDecimal.ZERO;
 
     @Column(name = "image_path")
     private String imagePath;

@@ -3,7 +3,7 @@ package com.project.mobile_phone_shop.Controller;
 import com.project.mobile_phone_shop.Dto.BrandDto;
 import com.project.mobile_phone_shop.Dto.PageDto;
 import com.project.mobile_phone_shop.Entity.Brand;
-import com.project.mobile_phone_shop.IService.BrandService;
+import com.project.mobile_phone_shop.Service.BrandService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;

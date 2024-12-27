@@ -1,4 +1,4 @@
-package com.project.mobile_phone_shop.IService;
+package com.project.mobile_phone_shop.Service;
 
 import com.project.mobile_phone_shop.Dto.ModelDto;
 import com.project.mobile_phone_shop.Entity.Model;

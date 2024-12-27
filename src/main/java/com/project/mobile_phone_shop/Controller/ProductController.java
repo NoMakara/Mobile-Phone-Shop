@@ -1,18 +1,17 @@
 package com.project.mobile_phone_shop.Controller;
 
-import com.project.mobile_phone_shop.Dto.ModelDto;
-import com.project.mobile_phone_shop.Dto.PageDto;
+import com.project.mobile_phone_shop.Dto.PriceDto;
 import com.project.mobile_phone_shop.Dto.ProductDto;
-import com.project.mobile_phone_shop.Entity.Model;
+import com.project.mobile_phone_shop.Dto.ProductImportDto;
 import com.project.mobile_phone_shop.Entity.Product;
-import com.project.mobile_phone_shop.IService.ModelService;
-import com.project.mobile_phone_shop.IService.ProductService;
+import com.project.mobile_phone_shop.Entity.ProductImportHistory;
+import com.project.mobile_phone_shop.Service.ProductService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Map;
+import javax.validation.Valid;
+import java.math.BigDecimal;
 
 @RestController
 @RequestMapping("/api/v1/products")
@@ -30,6 +29,18 @@ public class ProductController {
     public ResponseEntity<?> createProduct(@RequestBody ProductDto productDto) {
          Product product = productService.createProduct(productDto);
          return ResponseEntity.ok(product);
+    }
+
+    @PostMapping("/imports")
+    public ResponseEntity<?> importProduct(@RequestBody @Valid ProductImportDto productDto) {
+        productService.importProduct(productDto);
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/salePrice/{productId}")
+    public ResponseEntity<?> salePrice(@PathVariable Long productId, @RequestBody PriceDto priceDto) {
+        productService.setSalePrice(productId,priceDto.getPrice());
+        return ResponseEntity.ok().build();
     }
 
 }

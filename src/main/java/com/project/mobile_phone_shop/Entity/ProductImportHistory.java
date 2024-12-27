@@ -6,13 +6,12 @@ import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Data
 @Table(name = "tb_product_import_history")
 @NoArgsConstructor
 @Entity
-public class Product_Import_History {
+public class ProductImportHistory {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,7 +25,7 @@ public class Product_Import_History {
     private Integer importUnit;
 
     @Column(name = "price_per_unit")
-    private BigDecimal pricePerUnit;
+    private BigDecimal pricePerUnit = BigDecimal.ZERO;
 
     @ManyToOne
     @JoinColumn(name = "product_id")

@@ -6,6 +6,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+import javax.validation.ConstraintViolationException;
+
 @ControllerAdvice
 public class GlobalNotFoundHandler {
 
@@ -19,6 +21,18 @@ public class GlobalNotFoundHandler {
   public ResponseEntity<?> brandAlreadyExistHandler(AlreadyExistException exception){
       ApiResponse apiResponse = new ApiResponse(exception.getMessage(),HttpStatus.FORBIDDEN.value());
       return new ResponseEntity<>(apiResponse,HttpStatus.FORBIDDEN);
+  }
+
+  @ExceptionHandler(CannotBeNullException.class)
+  public ResponseEntity<?> handleCannotBeNull(CannotBeNullException exception){
+      ApiResponse apiResponse = new ApiResponse(exception.getMessage(),HttpStatus.BAD_REQUEST.value());
+      return new ResponseEntity<>(apiResponse,HttpStatus.BAD_REQUEST);
+  }
+
+  @ExceptionHandler(ConstraintViolationException.class)
+  public ResponseEntity<?> handleProductNotValidConstraint(ConstraintViolationException exception){
+      ApiResponse apiResponse = new ApiResponse(exception.getMessage(),HttpStatus.BAD_REQUEST.value());
+      return new ResponseEntity<>(apiResponse,HttpStatus.BAD_REQUEST);
   }
 }
 

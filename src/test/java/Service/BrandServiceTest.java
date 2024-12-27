@@ -127,6 +127,4 @@ public class BrandServiceTest {
         //then
         Assertions.assertAll(()-> brandService.deleteBrand(1));
     }
-
-
 }
