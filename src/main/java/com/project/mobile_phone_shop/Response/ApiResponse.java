@@ -1,13 +1,14 @@
 package com.project.mobile_phone_shop.Response;
 import lombok.Data;
+import org.springframework.http.HttpStatus;
 
 @Data
-public class ApiResponse {
+public class ApiResponse extends RuntimeException {
     private String message;
-    private int statusCode;
+    private HttpStatus statusCode;
 
-    public ApiResponse(String message, int statusCode) {
+    public ApiResponse(String message, HttpStatus httpStatus) {
         this.message = message;
-        this.statusCode = statusCode;
+        this.statusCode = httpStatus;
     }
 }

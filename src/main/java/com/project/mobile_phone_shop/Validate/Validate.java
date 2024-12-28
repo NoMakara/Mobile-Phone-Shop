@@ -1,9 +1,6 @@
 package com.project.mobile_phone_shop.Validate;
 
-import com.project.mobile_phone_shop.Dto.BrandDto;
-import com.project.mobile_phone_shop.Dto.ModelDto;
-import com.project.mobile_phone_shop.Dto.ProductDto;
-import com.project.mobile_phone_shop.Dto.ProductImportDto;
+import com.project.mobile_phone_shop.Dto.*;
 import com.project.mobile_phone_shop.Entity.*;
 import com.project.mobile_phone_shop.Exception.AlreadyExistException;
 import com.project.mobile_phone_shop.Exception.CannotBeNullException;
@@ -17,6 +14,9 @@ import com.project.mobile_phone_shop.Service.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @RequiredArgsConstructor
@@ -88,5 +88,14 @@ public class Validate {
         }
         product.setAvailableUnit(importDto.getImportUnit() + availableUnit);
         return product;
+    }
+
+    public void validateProductDuringSell(Map<Long,Product> productMap, List<ProductSoldDto> products){
+        products.forEach(p -> {
+            Product product = productMap.get(p.getProductId());
+            if(product == null || product.getAvailableUnit() < p.getNumberOfUnit()) {
+                throw new ApiResponse("Product [%s] Not enough products".formatted(product != null ? product.getName() : "Unknown"),HttpStatus.BAD_REQUEST);
+            }
+        });
     }
 }
