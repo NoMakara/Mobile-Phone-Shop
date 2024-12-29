@@ -20,4 +20,7 @@ public class Sale {
     @Column(name = "sold_date")
     private LocalDateTime soldDate;
 
+    @Column(name = "status")
+    private Boolean active;
+
 }

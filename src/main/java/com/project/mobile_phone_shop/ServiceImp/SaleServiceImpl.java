@@ -5,19 +5,17 @@ import com.project.mobile_phone_shop.Dto.SaleDto;
 import com.project.mobile_phone_shop.Entity.Product;
 import com.project.mobile_phone_shop.Entity.Sale;
 import com.project.mobile_phone_shop.Entity.SaleDetail;
+import com.project.mobile_phone_shop.Exception.NotFoundException;
 import com.project.mobile_phone_shop.Repository.ProductRepository;
 import com.project.mobile_phone_shop.Repository.SaleDetailRepository;
 import com.project.mobile_phone_shop.Repository.SaleRepository;
-import com.project.mobile_phone_shop.Response.ApiResponse;
 import com.project.mobile_phone_shop.Service.ProductService;
 import com.project.mobile_phone_shop.Service.SaleDetailService;
 import com.project.mobile_phone_shop.Service.SaleService;
 import com.project.mobile_phone_shop.Validate.Validate;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
-import javax.validation.Valid;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
@@ -65,6 +63,36 @@ public class SaleServiceImpl implements SaleService {
         updateStock(saleDto.getProducts(),mapProducts);
     }
 
+    @Override
+    public Sale getById(Long saleId) {
+        return saleRepository.findById(saleId).orElseThrow(NotFoundException::new);
+    }
+
+    @Override
+    public void cancelSale(Long saleId) {
+        //Update sale status
+        Sale sale = getById(saleId);
+        sale.setActive(false);
+        saleRepository.save(sale);
+
+        //update stock
+        List<SaleDetail> saleDetails = saleDetailRepository.findBySaleId(saleId);
+        List<Long> productId = saleDetails.stream()
+                .map(sd -> sd.getProduct().getId())
+                .toList();
+
+        List<Product> products = productRepository.findAllById(productId);
+
+        Map<Long, Product> mapProducts = products.stream()
+                .collect(Collectors.toMap(Product::getId,Function.identity()));
+
+        saleDetails.forEach(sd -> {
+            Product product = sd.getProduct();
+            product.setAvailableUnit(product.getAvailableUnit() + sd.getUnit());
+            productRepository.save(product);
+        });
+    }
+
     private void updateStock(List<ProductSoldDto> products, Map<Long, Product> mapProduct) {
         products.forEach(p -> {
             Product product = mapProduct.get(p.getProductId());
@@ -72,6 +100,5 @@ public class SaleServiceImpl implements SaleService {
             productRepository.save(product);
         });
     }
-
 
 }
