@@ -9,9 +9,11 @@ import com.project.mobile_phone_shop.Service.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import java.math.BigDecimal;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/v1/products")
@@ -42,5 +44,14 @@ public class ProductController {
         productService.setSalePrice(productId,priceDto.getPrice());
         return ResponseEntity.ok().build();
     }
+
+    @PostMapping("/uploadProduct")
+    public ResponseEntity<?> uploadProduct(@RequestParam("file") MultipartFile file) {
+        Map<Integer,String> errorMap = productService.uploadProduct(file);
+        return ResponseEntity.ok(errorMap);
+    }
+
+
+
 
 }

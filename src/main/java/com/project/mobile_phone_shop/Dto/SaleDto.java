@@ -9,6 +9,5 @@ import java.util.List;
 @Data
 public class SaleDto {
     private List<ProductSoldDto> products;
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm")
     private LocalDateTime saleDate;
 }

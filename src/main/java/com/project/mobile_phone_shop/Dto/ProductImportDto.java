@@ -19,6 +19,5 @@ public class ProductImportDto {
     private BigDecimal importPrice;
 
     @NotNull(message = "Import date can't be null")
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm")
     private LocalDateTime importDate;
 }
