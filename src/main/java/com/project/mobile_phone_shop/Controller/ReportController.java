@@ -1,5 +1,6 @@
 package com.project.mobile_phone_shop.Controller;
 
+import com.project.mobile_phone_shop.Dto.ExpenseReportDto;
 import com.project.mobile_phone_shop.Dto.ProductReportDto;
 import com.project.mobile_phone_shop.Dto.SaleDto;
 import com.project.mobile_phone_shop.Service.ReportService;
@@ -21,11 +22,19 @@ public class ReportController {
     private final ReportService reportService;
 
     //TODO fix runtime logic error after project end
-    @GetMapping("/{startDate}/{endDate}")
-    public ResponseEntity<?> reportProductSold(@DateTimeFormat(pattern = "yyyy-MM-dd") @PathVariable LocalDate startDate,
+    @GetMapping("/product/sold/{startDate}/{endDate}")
+    public ResponseEntity<?> productSoldReport(@DateTimeFormat(pattern = "yyyy-MM-dd") @PathVariable LocalDate startDate,
                                                @DateTimeFormat(pattern = "yyyy-MM-dd") @PathVariable LocalDate endDate) {
          List<ProductReportDto> productReport = reportService.getProductReport(startDate,endDate);
          return ResponseEntity.ok(productReport);
     }
+
+    @GetMapping("/expense/{startDate}/{endDate}")
+    public ResponseEntity<?> expenseReport(@DateTimeFormat(pattern = "yyyy-MM-dd") @PathVariable LocalDate startDate,
+                                               @DateTimeFormat(pattern = "yyyy-MM-dd") @PathVariable LocalDate endDate) {
+        List<ExpenseReportDto> expenseReport = reportService.getExpenseReport(startDate,endDate);
+        return ResponseEntity.ok(expenseReport);
+    }
+
 
 }
