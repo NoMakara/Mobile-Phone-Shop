@@ -1,6 +1,8 @@
 package com.project.mobile_phone_shop.Entity;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -9,8 +11,10 @@ import java.time.LocalDateTime;
 
 @Data
 @Table(name = "tb_product_import_history")
-@NoArgsConstructor
 @Entity
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class ProductImportHistory {
 
     @Id
@@ -25,7 +29,7 @@ public class ProductImportHistory {
     private Integer importUnit;
 
     @Column(name = "price_per_unit")
-    private BigDecimal pricePerUnit = BigDecimal.ZERO;
+    private BigDecimal pricePerUnit;
 
     @ManyToOne
     @JoinColumn(name = "product_id")

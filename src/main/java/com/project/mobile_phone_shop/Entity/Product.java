@@ -1,6 +1,8 @@
 package com.project.mobile_phone_shop.Entity;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -11,8 +13,10 @@ import java.util.List;
 @Data
 @Table(name = "tb_products",
         uniqueConstraints = {@UniqueConstraint(columnNames = {"model_id", "color_id"})})
-@NoArgsConstructor
 @Entity
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class Product {
 
     @Id
@@ -28,7 +32,7 @@ public class Product {
 
     @DecimalMin(value = "0.000001", message = "Price must be greater than 0")
     @Column(name = "sale_price")
-    private BigDecimal salePrice = BigDecimal.ZERO;
+    private BigDecimal salePrice;
 
     @Column(name = "image_path")
     private String imagePath;
